@@ -12,49 +12,42 @@ import numpy as np
 from typing import Optional, Tuple
 
 
-# =============================================================================
-# PALETA DARK THEME
-# =============================================================================
-
 DARK = {
-    "bg": "#0f0f0f",           # Fondo principal
-    "surface": "#1a1a1a",      # Superficie cards
-    "surface2": "#242424",     # Superficie elevada
-    "border": "#2a2a2a",       # Bordes sutiles
-    "text": "#fafafa",         # Texto principal
-    "text_secondary": "#a1a1aa", # Texto secundario
-    "text_muted": "#71717a",   # Texto tenue
+    "bg": "#0f0f0f",
+    "surface": "#1a1a1a",
+    "surface2": "#242424",
+    "border": "#2a2a2a",
+    "text": "#fafafa",
+    "text_secondary": "#a1a1aa",
+    "text_muted": "#71717a",
 }
 
-# Paleta de acentos vibrantes
 ACCENT = {
-    "primary": "#8b5cf6",      # Violeta vibrante
-    "secondary": "#a78bfa",    # Violeta claro
-    "cyan": "#22d3ee",         # Cyan brillante
-    "emerald": "#34d399",      # Esmeralda
-    "amber": "#fbbf24",        # Ámbar
-    "rose": "#fb7185",         # Rosa
-    "blue": "#60a5fa",         # Azul
-    "orange": "#fb923c",       # Naranja
+    "primary": "#8b5cf6",
+    "secondary": "#a78bfa",
+    "cyan": "#22d3ee",
+    "emerald": "#34d399",
+    "amber": "#fbbf24",
+    "rose": "#fb7185",
+    "blue": "#60a5fa",
+    "orange": "#fb923c",
 }
 
-# Gradiente de colores para gráficos
 CHART_COLORS = [
-    "#8b5cf6",  # Violeta
-    "#a78bfa",  # Violeta claro
-    "#c4b5fd",  # Lavanda
-    "#22d3ee",  # Cyan
-    "#34d399",  # Esmeralda
-    "#4ade80",  # Verde
-    "#fbbf24",  # Ámbar
-    "#fb923c",  # Naranja
-    "#fb7185",  # Rosa
-    "#f472b6",  # Pink
-    "#60a5fa",  # Azul
-    "#38bdf8",  # Sky
+    "#8b5cf6",
+    "#a78bfa",
+    "#c4b5fd",
+    "#22d3ee",
+    "#34d399",
+    "#4ade80",
+    "#fbbf24",
+    "#fb923c",
+    "#fb7185",
+    "#f472b6",
+    "#60a5fa",
+    "#38bdf8",
 ]
 
-# Configuración global de matplotlib para tema oscuro
 plt.rcParams.update({
     "font.family": "sans-serif",
     "font.sans-serif": ["DejaVu Sans", "Helvetica", "Arial", "sans-serif"],
@@ -98,10 +91,6 @@ def _format_number(n: int) -> str:
     """Formatea número con separador de miles chileno."""
     return f"{n:,}".replace(",", ".")
 
-
-# =============================================================================
-# GRÁFICOS CON TEMA OSCURO
-# =============================================================================
 
 def plot_bar_regiones(
     df_agg: pd.DataFrame,
@@ -163,7 +152,6 @@ def plot_bar_regiones(
     ax.tick_params(axis="x", colors=DARK["text_muted"])
     ax.set_xlim(0, max_val * 1.12)
     
-    # Grid sutil
     ax.xaxis.grid(True, linestyle="-", alpha=0.1, color=DARK["text_muted"])
     ax.set_axisbelow(True)
     
@@ -214,7 +202,6 @@ def plot_donut_tipos(
         autotext.set_color(DARK["bg"])
         autotext.set_fontweight("bold")
     
-    # Centro con total
     total = data["cantidad"].sum()
     centre = plt.Circle((0, 0), 0.4, fc=DARK["bg"])
     ax.add_artist(centre)
@@ -223,7 +210,6 @@ def plot_donut_tipos(
     ax.text(0, -0.12, "Total", ha="center", va="center", 
             fontsize=11, color=DARK["text_muted"])
     
-    # Leyenda
     legend_labels = [t[:25] + "..." if len(t) > 25 else t for t in data["tipo"]]
     legend = ax.legend(
         wedges,
@@ -355,5 +341,4 @@ def plot_top_comunas(
     return fig
 
 
-# Alias
 plot_pie_tipos = plot_donut_tipos

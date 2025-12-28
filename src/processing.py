@@ -37,17 +37,13 @@ def clean_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         DataFrame limpio.
     """
-    # Copiar para no modificar el original
     df = df.copy()
     
-    # Normalizar nombres de columnas (quitar espacios, minúsculas)
     df.columns = df.columns.str.strip()
     
-    # Rellenar valores nulos en columnas de texto
     text_cols = df.select_dtypes(include=["object"]).columns
     df[text_cols] = df[text_cols].fillna("No informado")
     
-    # Convertir columnas numéricas que puedan estar como texto
     for col in df.columns:
         if "Codigo" in col and df[col].dtype == object:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -219,17 +215,14 @@ def calculate_kpis(df: pd.DataFrame) -> dict:
     """
     total = len(df)
     
-    # Regiones únicas
     regiones = 0
     if "RegionGlosa" in df.columns:
         regiones = df["RegionGlosa"].nunique()
     
-    # Comunas únicas
     comunas = 0
     if "ComunaGlosa" in df.columns:
         comunas = df["ComunaGlosa"].nunique()
     
-    # Porcentaje de establecimientos públicos
     pct_publico = 0.0
     if "DependenciaAdministrativa" in df.columns:
         publicos = df["DependenciaAdministrativa"].str.contains(
@@ -239,7 +232,6 @@ def calculate_kpis(df: pd.DataFrame) -> dict:
         ).sum()
         pct_publico = (publicos / total * 100) if total > 0 else 0.0
     
-    # Establecimientos con urgencia
     con_urgencia = 0
     if "TieneServicioUrgencia" in df.columns:
         con_urgencia = (df["TieneServicioUrgencia"] == "Sí").sum()

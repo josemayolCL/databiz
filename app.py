@@ -35,10 +35,6 @@ from src.viz import (
 from src.utils import df_to_csv_bytes, format_number, generate_conclusions
 
 
-# =============================================================================
-# CONFIGURACIÓN
-# =============================================================================
-
 st.set_page_config(
     page_title="Establecimientos de Salud Chile",
     page_icon="",
@@ -46,15 +42,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# =============================================================================
-# DARK THEME CSS & RESPONSIVENESS
-# =============================================================================
 
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
-    /* Base colors */
     :root {
         --bg-primary: #0a0a0a;
         --bg-secondary: #111111;
@@ -74,7 +66,6 @@ st.markdown("""
         --gradient: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #22d3ee 100%);
     }
     
-    /* Main app */
     .stApp {
         background: var(--bg-primary);
     }
@@ -84,7 +75,6 @@ st.markdown("""
         color: var(--text-primary);
     }
     
-    /* Hero section responsive */
     .hero {
         background: var(--bg-secondary);
         border: 1px solid var(--border);
@@ -163,7 +153,6 @@ st.markdown("""
         50% { opacity: 0.5; }
     }
     
-    /* Custom Responsive Grid for Metrics */
     .custom-metric-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -206,7 +195,6 @@ st.markdown("""
         line-height: 1.1;
     }
     
-    /* Section headers */
     .section-header {
         display: flex;
         align-items: center;
@@ -229,7 +217,6 @@ st.markdown("""
         background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
     }
     
-    /* Sidebar */
     [data-testid="stSidebar"] {
         background: var(--bg-secondary);
         border-right: 1px solid var(--border);
@@ -246,7 +233,6 @@ st.markdown("""
         border-bottom: 1px solid var(--border);
     }
     
-    /* Buttons */
     .stButton > button {
         background: var(--gradient);
         color: white;
@@ -264,7 +250,72 @@ st.markdown("""
         transform: translateY(-1px);
     }
     
-    /* Filter badge responsive */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(52, 211, 153, 0.25);
+    }
+    
+    .stDownloadButton > button:hover {
+        box-shadow: 0 8px 25px rgba(52, 211, 153, 0.35);
+        transform: translateY(-2px);
+    }
+    
+    .stSelectbox > div > div,
+    .stMultiSelect > div > div,
+    .stTextInput > div > div > input {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-primary);
+    }
+    
+    .stSelectbox > div > div:focus-within,
+    .stMultiSelect > div > div:focus-within {
+        border-color: var(--accent-violet);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+    }
+    
+    .stCheckbox > label > span {
+        color: var(--text-secondary);
+    }
+    
+    .stDataFrame {
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+    }
+    
+    .stDataFrame [data-testid="stDataFrameResizable"] {
+        background: var(--bg-secondary);
+    }
+    
+    .conclusion-item {
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--accent-violet);
+        border-radius: 0 12px 12px 0;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+    }
+    
+    .conclusion-item strong {
+        color: var(--text-primary);
+    }
+    
+    .stAlert {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-secondary);
+    }
+    
     .filter-active {
         display: inline-flex;
         align-items: center;
@@ -278,7 +329,6 @@ st.markdown("""
         flex-wrap: wrap;
     }
     
-    /* Footer */
     .footer {
         text-align: center;
         padding: 4rem 0 2rem;
@@ -288,11 +338,23 @@ st.markdown("""
         margin-top: 4rem;
     }
     
-    /* Hide default elements */
+    .footer a {
+        color: var(--accent-violet-light);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    
+    .footer a:hover {
+        color: var(--accent-violet);
+    }
+    
+    .stSpinner > div {
+        border-color: var(--accent-violet) transparent transparent transparent;
+    }
+    
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Adjust Streamlit padding for mobile */
     .block-container {
         padding-top: 2rem;
         padding-bottom: 2rem;
@@ -310,7 +372,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Configuración del dataset
+
 DEFAULT_PACKAGE_ID = "3bf4cf7c-f638-4735-9a01-f65faae4beca"
 DEFAULT_RESOURCE_ID = "2c44d782-3365-44e3-aefb-2c8b8363a1bc"
 BASE_URL = "https://datos.gob.cl"
@@ -322,10 +384,6 @@ REQUIRED_COLUMNS = [
     "ComunaGlosa"
 ]
 
-
-# =============================================================================
-# FUNCIONES DE CARGA
-# =============================================================================
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_data(resource_url: str) -> Optional[pd.DataFrame]:
@@ -347,10 +405,6 @@ def get_package_resources(package_id: str) -> list:
     except Exception as e:
         return []
 
-
-# =============================================================================
-# SIDEBAR
-# =============================================================================
 
 def render_sidebar() -> dict:
     with st.sidebar:
@@ -395,10 +449,6 @@ def render_filters(df: pd.DataFrame) -> dict:
         return {"region": region, "tipo": tipo, "dependencia": dep}
 
 
-# =============================================================================
-# COMPONENTES
-# =============================================================================
-
 def render_hero():
     st.markdown('''
     <div class="hero">
@@ -413,7 +463,6 @@ def render_hero():
 
 
 def render_kpis(kpis: dict):
-    # Uso de CSS Grid personalizado para responsividad en lugar de st.columns
     html = f"""
     <div class="custom-metric-container">
         <div class="metric-card">
@@ -449,8 +498,6 @@ def render_section_header(title: str):
 def render_charts(df: pd.DataFrame):
     render_section_header("Análisis Visual")
     
-    # En móvil, las columnas de Streamlit se apilan automáticamente.
-    # Pero para asegurar buen tamaño, mantenemos st.columns(2) que en móvil se vuelve 1.
     col1, col2 = st.columns(2)
     
     with col1:
@@ -487,7 +534,6 @@ def render_data_table(df: pd.DataFrame):
     
     selected = st.multiselect("Columnas visibles", cols, default=default if default else cols[:5])
     
-    # Altura dinámica
     st.dataframe(df[selected], use_container_width=True, height=450)
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -518,15 +564,10 @@ def render_footer():
     ''', unsafe_allow_html=True)
 
 
-# =============================================================================
-# MAIN
-# =============================================================================
-
 def main():
     render_hero()
     config = render_sidebar()
     
-    # Verificar conexión en primer lugar
     with st.spinner("Conectando con datos.gob.cl..."):
         df = load_data(config["resource_url"])
     
@@ -551,7 +592,6 @@ def main():
         st.warning("No se encontraron registros con los filtros actuales.")
         return
     
-    # Badge de filtros activos (Responsive)
     if filters["region"] != "Todas" or filters["tipo"] != "Todos" or filters["dependencia"] != "Todas":
         st.markdown(f'<div class="filter-active">🎯 Filtrado: {len(df_f):,} registros encontrados</div>', unsafe_allow_html=True)
     
@@ -566,4 +606,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

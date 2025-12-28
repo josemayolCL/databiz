@@ -9,11 +9,10 @@ from typing import Optional, Dict, Any
 import time
 
 
-# Configuración por defecto
 BASE_URL = "https://datos.gob.cl"
 DEFAULT_TIMEOUT = 30
 MAX_RETRIES = 3
-RETRY_DELAY = 2  # segundos
+RETRY_DELAY = 2
 
 
 def _make_request(
@@ -50,7 +49,7 @@ def _make_request(
                 time.sleep(RETRY_DELAY)
             continue
     
-    raise last_exception  # type: ignore
+    raise last_exception
 
 
 def fetch_package_info(package_id: str, base_url: str = BASE_URL) -> Dict[str, Any]:

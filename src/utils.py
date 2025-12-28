@@ -41,7 +41,6 @@ def format_number(n: Union[int, float], decimals: int = 0) -> str:
     else:
         formatted = f"{int(n):,}"
     
-    # Formato chileno: punto para miles, coma para decimales
     return formatted.replace(",", "X").replace(".", ",").replace("X", ".")
 
 
@@ -104,7 +103,6 @@ def generate_conclusions(kpis: dict, df: pd.DataFrame) -> list:
             "cuentan con servicio de urgencia."
         )
     
-    # Región con más establecimientos
     if "RegionGlosa" in df.columns:
         top_region = df["RegionGlosa"].value_counts().head(1)
         if not top_region.empty:
@@ -115,7 +113,6 @@ def generate_conclusions(kpis: dict, df: pd.DataFrame) -> list:
                 f"con {format_number(region_count)} establecimientos."
             )
     
-    # Tipo más común
     if "TipoEstablecimientoGlosa" in df.columns:
         top_tipo = df["TipoEstablecimientoGlosa"].value_counts().head(1)
         if not top_tipo.empty:
