@@ -132,13 +132,17 @@ dataviz_chile/
 
 ## 🌐 Despliegue en Streamlit Community Cloud
 
-1. Sube el proyecto a un repositorio GitHub público
-2. Ve a [share.streamlit.io](https://share.streamlit.io)
-3. Conecta tu cuenta GitHub
-4. Selecciona el repositorio y el archivo `app.py`
-5. Click en "Deploy"
+1. Teniendo tu código en un repositorio privado de GitHub.
+2. Inicia sesión en [share.streamlit.io](https://share.streamlit.io).
+3. Haz clic en "New app" y selecciona "Use existing repo".
+4. Elige tu repositorio del listado (asegúrate de dar permisos a Streamlit para ver tus repos privados si te lo pide).
+   - **Repository:** `TuUsuario/dataviz-chile-st`
+   - **Branch:** `master` (o `main`)
+   - **Main file path:** `app.py`
+5. Haz clic en **"Deploy!"**.
+6. Streamlit Cloud instalará automáticamente las dependencias desde `requirements.txt`.
 
-La URL será algo como: `https://tu-usuario-dataviz-chile.streamlit.app`
+La URL será algo como: `https://dataviz-chile-st.streamlit.app`
 
 ## 📝 Licencia
 
