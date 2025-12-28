@@ -136,13 +136,13 @@ dataviz_chile/
 2. Inicia sesión en [share.streamlit.io](https://share.streamlit.io).
 3. Haz clic en "New app" y selecciona "Use existing repo".
 4. Elige tu repositorio del listado (asegúrate de dar permisos a Streamlit para ver tus repos privados si te lo pide).
-   - **Repository:** `TuUsuario/dataviz-chile-st`
-   - **Branch:** `master` (o `main`)
+   - **Repository:** `josemayolCL/databiz`
+   - **Branch:** `main`
    - **Main file path:** `app.py`
 5. Haz clic en **"Deploy!"**.
 6. Streamlit Cloud instalará automáticamente las dependencias desde `requirements.txt`.
 
-La URL será algo como: `https://dataviz-chile-st.streamlit.app`
+La URL será algo como: `https://databiz.streamlit.app`
 
 ## 📝 Licencia
 
